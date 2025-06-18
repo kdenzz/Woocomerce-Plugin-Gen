@@ -10,11 +10,16 @@ export default function App() {
 
     const generatePlugin = async () => {
         setLoading(true);
-        const res = await fetch('http://localhost:3001/api/generate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ prompt }),
-        });
+        const res = await fetch(
+            process.env.NODE_ENV === 'development'
+                ? 'http://localhost:3001/api/generate'
+                : 'https://woocomerce-plugin-gen.onrender.com/api/generate',
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt }),
+            }
+        );
         const data = await res.json();
         setCode(data.code);
         setLoading(false);
